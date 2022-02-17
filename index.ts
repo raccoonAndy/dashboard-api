@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { userRouter } from './users/users.js';
 
 const port = 8080;
@@ -25,7 +25,7 @@ app.get('/hello', (req, res) => {
 app.use('/users', userRouter);
 
 // ! handler error must be at the end after all .use()
-app.use((error, req, res, next) => {
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(error.message);
   res.status(401).send(error.message);
 });
