@@ -1,41 +1,38 @@
 import express, { Express } from 'express';
 import { Server } from 'http';
-import { LoggerService } from './logger/logger.service';
+import { inject, injectable } from 'inversify';
+import { TYPES } from './types';
+import { ILogger } from './logger/logger.interface';
+import { IErrorHandler } from './errors/error.handler.interface';
 import UserController from './users/users.controller';
-import { ErrorFilters } from './errors/error.filters';
+import 'reflect-metadata';
 
+@injectable()
 export class App {
   app: Express;
   server: Server | undefined;
   port: number;
-  logger: LoggerService;
-  userController: UserController;
-  errorFilters: ErrorFilters;
 
   constructor(
-    logger: LoggerService,
-    userController: UserController,
-    errorFilters: ErrorFilters
+    @inject(TYPES.ILogger) private logger: ILogger,
+    @inject(TYPES.IErrorHandler) private errorHandler: IErrorHandler,
+    @inject(TYPES.IUserController) private userController: UserController
   ) {
     this.app = express();
     this.port = 8000;
-    this.server = undefined;
-    this.logger = logger;
-    this.userController = userController;
-    this.errorFilters = errorFilters;
   }
 
   useRoutes() {
     this.app.use('/users', this.userController.router);
   }
 
-  useErrorFilters() {
-    this.app.use(this.errorFilters.catch.bind(this.errorFilters));
+  useErrorHandler() {
+    this.app.use(this.errorHandler.catch.bind(this.errorHandler));
   }
 
   public async init() {
     this.useRoutes();
-    this.useErrorFilters();
+    this.useErrorHandler();
     this.server = this.app.listen(this.port);
     this.logger.log(`Server is running on http://localhost:${this.port}`);
   }
