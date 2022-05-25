@@ -30,6 +30,7 @@ export default class UserController extends BaseController implements IUserContr
 	}
 
 	register(req: Request, res: Response, next: NextFunction): void {
+		this.loggerService.log('Registered');
 		this.ok(res, 'Register');
 	}
 }
