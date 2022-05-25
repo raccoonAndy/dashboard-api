@@ -9,27 +9,27 @@ import 'reflect-metadata';
 
 @injectable()
 export default class UserController extends BaseController implements IUserControllers {
-  constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
-    super(loggerService);
-    this.bindRouter([
-      {
-        path: '/login',
-        func: this.login,
-        method: 'get',
-      },
-      {
-        path: '/register',
-        func: this.register,
-        method: 'get',
-      },
-    ]);
-  }
+	constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
+		super(loggerService);
+		this.bindRouter([
+			{
+				path: '/login',
+				func: this.login,
+				method: 'get',
+			},
+			{
+				path: '/register',
+				func: this.register,
+				method: 'get',
+			},
+		]);
+	}
 
-  login(req: Request, res: Response, next: NextFunction) {
-    next(new HTTPError(401, 'Error authorization'));
-  }
+	login(req: Request, res: Response, next: NextFunction): void {
+		next(new HTTPError(401, 'Error authorization'));
+	}
 
-  register(req: Request, res: Response, next: NextFunction) {
-    this.ok(res, 'Register');
-  }
+	register(req: Request, res: Response, next: NextFunction): void {
+		this.ok(res, 'Register');
+	}
 }
