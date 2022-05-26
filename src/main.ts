@@ -5,8 +5,10 @@ import { IErrorHandler } from './errors/error.handler.interface';
 import { ILogger } from './logger/logger.interface';
 import { LoggerService } from './logger/logger.service';
 import { TYPES } from './types';
+import { UserService } from './users/user.service';
+import { IUserService } from './users/user.service.interface';
 import UserController from './users/users.controller';
-import { IUserControllers } from './users/users.controller.interface';
+import { IUserController } from './users/users.controller.interface';
 
 interface IBootstrap {
 	app: App;
@@ -16,7 +18,8 @@ interface IBootstrap {
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService);
 	bind<IErrorHandler>(TYPES.IErrorHandler).to(ErrorHandler);
-	bind<IUserControllers>(TYPES.IUserController).to(UserController);
+	bind<IUserController>(TYPES.IUserController).to(UserController);
+	bind<IUserService>(TYPES.IUserService).to(UserService);
 	bind<App>(TYPES.Application).to(App);
 });
 
