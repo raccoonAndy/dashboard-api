@@ -4,7 +4,7 @@ import { BaseController } from '../common/base.controller';
 import { HTTPError } from '../errors/http-error.class';
 import { ILogger } from '../logger/logger.interface';
 import { TYPES } from '../types';
-import { IUserController } from './users.controller.interface';
+import { IUserController } from './user.controller.interface';
 import { UserLoginDTO } from './dto/user-login.dto';
 import { UserRegisterDTO } from './dto/user-register.dto';
 import { User } from './user.entity';

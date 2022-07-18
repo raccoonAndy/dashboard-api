@@ -4,18 +4,18 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import { ILogger } from './logger/logger.interface';
 import { IErrorHandler } from './errors/error.handler.interface';
-import UserController from './users/users.controller';
+import UserController from './users/user.controller';
 import { json } from 'body-parser';
 import { IConfigService } from './config/config.service.interface';
 import 'reflect-metadata';
 import { PrismaService } from './database/prisma.service';
-import { IUserController } from './users/users.controller.interface';
+import { IUserController } from './users/user.controller.interface';
 import { AuthMiddleware } from './common/auth.middleware';
 
 @injectable()
 export class App {
 	app: Express;
-	server: Server | undefined;
+	server: Server;
 	port: number;
 
 	constructor(
@@ -50,5 +50,9 @@ export class App {
 		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`Server is running on http://localhost:${this.port}`);
+	}
+
+	public close(): void {
+		this.server.close();
 	}
 }
